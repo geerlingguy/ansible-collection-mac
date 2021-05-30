@@ -1,0 +1,12 @@
+---
+mas_email: ""
+mas_password: ""
+mas_installed_app_ids: []  # Deprecated
+mas_installed_apps:
+  - {id: 425264550, name: "Blackmagic Disk Speed Test (3.0)"}
+  - {id: 411643860, name: "DaisyDisk (4.3.2)"}
+  - {id: 498486288, name: "Quick Resizer (1.9)"}
+  - {id: 497799835, name: "Xcode (8.1)"}
+
+mas_upgrade_all_apps: false
+mas_signin_dialog: false
