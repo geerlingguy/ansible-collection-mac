@@ -1,3 +1,11 @@
-# Ansible Collection - geerlingguy.mac
+# Jeff Geerling's Mac Collection for Ansible
 
-Documentation for the collection.
+TODO: Docs go here.
+
+## License
+
+MIT
+
+## Author
+
+This collection was created by [Jeff Geerling](https://www.jeffgeerling.com), author of [Ansible for DevOps](https://www.ansiblefordevops.com).
