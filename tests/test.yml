@@ -22,5 +22,5 @@
 
   roles:
     - elliotweiser.osx-command-line-tools
-    - geerlingguy.machomebrew
-    - geerlingguy.macmas
+    - geerlingguy.mac.homebrew
+    - geerlingguy.mac.mas
