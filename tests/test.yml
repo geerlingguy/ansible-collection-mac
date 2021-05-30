@@ -1,0 +1,26 @@
+---
+- hosts: localhost
+
+  vars:
+    homebrew_clear_cache: true
+
+    homebrew_installed_packages:
+      - ssh-copy-id  # from homebrew/core
+      - nginx-full  # from dengi/nginx
+
+    homebrew_cask_apps:
+      - firefox  # from hombrew/cask
+      - google-chrome  # from hombrew/cask
+
+    homebrew_taps:
+      - homebrew/core
+      - name: denji/nginx
+        url: 'https://github.com/denji/homebrew-nginx.git'
+
+    mas_installed_app_ids: []
+    mas_installed_apps: []
+
+  roles:
+    - elliotweiser.osx-command-line-tools
+    - geerlingguy.mac.homebrew
+    - geerlingguy.mac.mas
