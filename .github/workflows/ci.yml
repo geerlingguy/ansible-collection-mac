@@ -10,7 +10,7 @@ name: CI
 
 defaults:
   run:
-    working-directory: 'geerlingguy.homebrew'
+    working-directory: ansible_collections/geerlingguy/mac
 
 jobs:
 
@@ -43,9 +43,6 @@ jobs:
       matrix:
         os:
           - macos-latest
-
-    env:
-      working-directory: ./ansible_collections/geerlingguy/mac
 
     steps:
       - name: Check out the codebase.
