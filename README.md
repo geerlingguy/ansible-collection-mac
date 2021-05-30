@@ -1,4 +1,4 @@
-# Jeff Geerling's Mac Collection for Ansible
+# Mac Collection for Ansible
 
 [![CI][badge-gh-actions]][link-gh-actions]
 
