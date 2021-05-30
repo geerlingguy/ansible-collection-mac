@@ -37,7 +37,7 @@ tags:
   - server
 
 dependencies:
-  - community.general: ">=3.0.0"
+  community.general: ">=3.0.0"
 
 repository: https://github.com/geerlingguy/ansible-collection-mac
 documentation: https://github.com/geerlingguy/ansible-collection-mac
