@@ -6,8 +6,8 @@ This collection includes helpful Ansible roles and content to help with macOS au
 
 Roles included in this collection (click on the link to see the role's README and documentation):
 
-  - [`geerlingguy.mac.homebrew`](roles/homebrew)
-  - [`geerlingguy.mac.mas`](roles/mas)
+  - [`geerlingguy.mac.homebrew`](https://github.com/geerlingguy/ansible-collection-mac/blob/master/roles/homebrew/README.md)
+  - [`geerlingguy.mac.mas`](https://github.com/geerlingguy/ansible-collection-mac/blob/master/roles/mas/README.md)
   - `geerlingguy.mac.dock` (to be added soon!)
 
 ## Installation
