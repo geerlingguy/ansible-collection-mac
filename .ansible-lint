@@ -1,2 +1,3 @@
 skip_list:
   - risky-file-permissions
+  - yaml
