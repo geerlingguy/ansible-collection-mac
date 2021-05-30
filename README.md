@@ -2,7 +2,7 @@
 
 [![CI][badge-gh-actions]][link-gh-actions]
 
-TODO: Docs go here.
+This collection includes helpful Ansible roles and content to help with macOS automation. For a good example of the collection's usage, see the [Mac Dev Playbook](https://github.com/geerlingguy/mac-dev-playbook).
 
 Roles included in this collection (click on the link to see the role's README and documentation):
 
@@ -43,9 +43,39 @@ collections:
 
 ## Usage
 
-TODO.
+Here's an example playbook which installs some Mac Apps (assuming you are signed into the App Store), CLI tools via Homebrew, and Cask Apps using Homebrew:
+
+```yaml
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    mas_installed_app_ids:
+      - 424389933 # Final Cut Pro
+      - 497799835 # Xcode
+
+    homebrew_installed_packages:
+      - node
+      - nvm
+      - redis
+      - ssh-copy-id
+      - pv
+
+    homebrew_cask_apps:
+      - docker
+      - firefox
+      - google-chrome
+      - vlc
+
+  roles:
+    - geerlingguy.mac.homebrew
+    - geerlingguy.mac.mas
+```
 
 For a real-world usage example, see my [Mac Dev Playbook](https://github.com/geerlingguy/mac-dev-playbook).
+
+See the full documentation for each role in the role's README, linked above.
 
 ## License
 

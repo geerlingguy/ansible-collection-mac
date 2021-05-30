@@ -1,0 +1,52 @@
+---
+# Automated release playbook for Ansible Collections.
+#
+# Originally based on Ericsysmin's 2020 blog post. Meant to be used in a GitHub
+# Actions CI environment.
+#
+# Requires a ANSIBLE_GALAXY_TOKEN secret to be configured on the GitHub repo.
+#
+# Usage:
+#   ansible-playbook -i 'localhost,' galaxy-deploy.yml \
+#   -e "github_tag=${{ github.ref }}"
+
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    namespace: geerlingguy
+    collection: mac
+    # Requires github_tag to be set when calling playbook.
+    release_tag: "{{ github_tag.split('/')[-1] }}"
+
+  pre_tasks:
+    - name: Ensure ANSIBLE_GALAXY_TOKEN is set.
+      fail:
+        msg: A valid ANSIBLE_GALAXY_TOKEN must be set.
+      when: "lookup('env','ANSIBLE_GALAXY_TOKEN') | length == 0"
+
+    - name: Ensure the ~/.ansible directory exists.
+      file:
+        path: ~/.ansible
+        state: directory
+
+    - name: Write the Galaxy token to ~/.ansible/galaxy_token
+      copy:
+        content: |
+          token: {{ lookup('env','ANSIBLE_GALAXY_TOKEN') }}
+        dest: ~/.ansible/galaxy_token
+
+  tasks:
+    - name: Ensure the galaxy.yml tag is up to date.
+      lineinfile:
+        path: galaxy.yml
+        regexp: "^version:"
+        line: 'version: "{{ release_tag }}"'
+
+    - name: Build the collection.
+      command: ansible-galaxy collection build
+
+    - name: Publish the collection.
+      command: >
+        ansible-galaxy collection publish ./{{ namespace }}-{{ collection }}-{{ tag }}.tar.gz

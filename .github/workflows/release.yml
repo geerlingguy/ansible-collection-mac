@@ -7,7 +7,7 @@ name: Release
 
 defaults:
   run:
-    working-directory: 'geerlingguy.homebrew'
+    working-directory: ansible_collections/geerlingguy/mac
 
 jobs:
 
@@ -18,7 +18,7 @@ jobs:
       - name: Check out the codebase.
         uses: actions/checkout@v2
         with:
-          path: 'geerlingguy.homebrew'
+          path: ansible_collections/geerlingguy/mac
 
       - name: Set up Python 3.
         uses: actions/setup-python@v2
@@ -28,5 +28,5 @@ jobs:
       - name: Install Ansible.
         run: pip3 install ansible-core
 
-      - name: "TODO: Release process TBD."
-        run: "echo 'not implemented'"
+      - name: Release to Ansible Galaxy.
+        run: ansible-playbook -i 'localhost,' galaxy-deploy.yml -e "github_tag=${{ github.ref }}"
