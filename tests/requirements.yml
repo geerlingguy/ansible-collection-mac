@@ -1,0 +1,6 @@
+---
+roles:
+  - name: elliotweiser.osx-command-line-tools
+
+collections:
+  - name: community.general
