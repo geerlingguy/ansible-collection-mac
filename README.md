@@ -2,6 +2,14 @@
 
 TODO: Docs go here.
 
+## Installation
+
+TODO.
+
+## Usage
+
+TODO.
+
 ## License
 
 MIT
