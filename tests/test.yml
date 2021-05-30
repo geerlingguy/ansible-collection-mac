@@ -1,6 +1,9 @@
 ---
 - hosts: localhost
 
+  collections:
+    - geerlingguy.mac
+
   vars:
     homebrew_clear_cache: true
 
@@ -22,5 +25,5 @@
 
   roles:
     - elliotweiser.osx-command-line-tools
-    - geerlingguy.mac.homebrew
-    - geerlingguy.mac.mas
+    - homebrew
+    - mas
