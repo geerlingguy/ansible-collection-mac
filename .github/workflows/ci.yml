@@ -45,11 +45,14 @@ jobs:
           - macos-11
           - macos-10.15
 
+    env:
+      working-directory: ./ansible_collections/geerlingguy/mac
+
     steps:
       - name: Check out the codebase.
         uses: actions/checkout@v2
         with:
-          path: 'geerlingguy.homebrew'
+          path: ansible_collections/geerlingguy/mac
 
       - name: Uninstall GitHub Actions' built-in Homebrew.
         run: tests/uninstall-homebrew.sh
@@ -60,13 +63,14 @@ jobs:
           sudo rm -rf /Applications/Google\ Chrome.app
 
       - name: Install test dependencies.
-        run: sudo pip3 install ansible
+        run: sudo pip3 install ansible-core
 
       - name: Set up the test environment.
         run: |
           cp tests/ansible.cfg ./ansible.cfg
           cp tests/inventory ./inventory
-          ansible-galaxy install -r requirements.yml -p ./roles
+          ansible-galaxy collection install community.general
+          ansible-galaxy role install elliotweiser.osx-command-line-tools
 
       - name: Test the playbook's syntax.
         run: ansible-playbook tests/test.yml --syntax-check
