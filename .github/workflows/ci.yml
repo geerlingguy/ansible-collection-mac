@@ -8,44 +8,21 @@ name: CI
   schedule:
     - cron: "0 5 * * 0"
 
-env:
-  NAMESPACE: geerlingguy
-  COLLECTION: mac
-  ANSIBLE_COLLECTIONS_PATHS: ${{ github.workspace }}
+defaults:
+  run:
+    working-directory: ansible_collections/geerlingguy/mac
 
 jobs:
-
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out the codebase.
-        uses: actions/checkout@v2
-
-      - name: Set up Python 3.
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-
-      - name: Install test dependencies.
-        run: pip3 install ansible-core
-
-      - name: Build collection.
-        run: ansible-galaxy collection build -vv
-
-      - name: Store collection artifact.
-        uses: actions/upload-artifact@v2
-        with:
-          path: ${{ env.NAMESPACE }}-${{ env.COLLECTION }}-*.tar.gz
-          name: ${{ env.NAMESPACE }}-${{ env.COLLECTION }}
 
   lint:
     name: Lint
     runs-on: ubuntu-latest
-    needs: build
-
     steps:
+      - name: Check out the codebase.
+        uses: actions/checkout@v2
+        with:
+          path: ansible_collections/geerlingguy/mac
+
       - name: Set up Python 3.
         uses: actions/setup-python@v2
         with:
@@ -54,30 +31,25 @@ jobs:
       - name: Install test dependencies.
         run: pip3 install yamllint ansible-core ansible-lint
 
-      - name: Download collection.
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ env.NAMESPACE }}-${{ env.COLLECTION }}
-
-      - name: Install collection.
-        run: ansible-galaxy collection install ${{ env.NAMESPACE }}-${{ env.COLLECTION }}-*.tar.gz
-
       - name: Lint code.
         run: |
           yamllint .
           ansible-lint
-        working-directory: ./ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
 
   integration:
     name: Integration
     runs-on: ${{ matrix.os }}
-    needs: build
     strategy:
       matrix:
         os:
           - macos-latest
 
     steps:
+      - name: Check out the codebase.
+        uses: actions/checkout@v2
+        with:
+          path: ansible_collections/geerlingguy/mac
+
       - name: Uninstall GitHub Actions' built-in Homebrew.
         run: tests/uninstall-homebrew.sh
 
@@ -89,29 +61,18 @@ jobs:
       - name: Install test dependencies.
         run: sudo pip3 install ansible-core
 
-      - name: Download collection.
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ env.NAMESPACE }}-${{ env.COLLECTION }}
-
-      - name: Install collection.
-        run: ansible-galaxy collection install ${{ env.NAMESPACE }}-${{ env.COLLECTION }}-*.tar.gz
-
       - name: Set up the test environment.
         run: |
           cp tests/ansible.cfg ./ansible.cfg
           cp tests/inventory ./inventory
-          cp tests/requirements.yml ./requirements.yml
-          ansible-galaxy install -r requirements.yml
-        working-directory: ./ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
+          ansible-galaxy collection install community.general
+          ansible-galaxy role install elliotweiser.osx-command-line-tools
 
       - name: Test the playbook's syntax.
         run: ansible-playbook tests/test.yml --syntax-check
-        working-directory: ./ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
 
       - name: Test the playbook.
         run: ansible-playbook tests/test.yml
-        working-directory: ./ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
         env:
           ANSIBLE_FORCE_COLOR: '1'
 
@@ -120,6 +81,5 @@ jobs:
           idempotence=$(mktemp)
           ansible-playbook tests/test.yml | tee -a ${idempotence}
           tail ${idempotence} | grep -q 'changed=0.*failed=0' && (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)
-        working-directory: ./ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
         env:
           ANSIBLE_FORCE_COLOR: '1'
