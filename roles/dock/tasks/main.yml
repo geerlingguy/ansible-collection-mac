@@ -14,9 +14,8 @@
   ansible.builtin.include_tasks: dock-add.yml
   loop: "{{ dockitems_persist }}"
 
-- name: Ensure correct Dock order.
-  ansible.builtin.command:
-    cmd: dockutil --move '{{ item.name }}' --position '{{ item.pos }}'
+- name: Ensure dock items are in correct position.
+  ansible.builtin.include_tasks: dock-position.yml
   when:
     - item.pos is defined
     - item.pos > 0

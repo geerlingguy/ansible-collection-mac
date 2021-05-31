@@ -1,0 +1,16 @@
+---
+- name: Check dock item's current position.
+  ansible.builtin.command:
+    cmd: dockutil --find '{{ item.name }}'
+  register: dock_item_position
+  failed_when: '"command not found" in dock_item_position.stdout'
+  changed_when: false
+
+- name: Get current dock item position from output.
+  set_fact:
+    current_position: "{{ dock_item_position | regex_replace('^.*slot (.*) in.*$', '\\1') }}"
+
+- name: Move dock item to the correct position.
+  ansible.builtin.command:
+    cmd: dockutil --move '{{ item.name }}' --position '{{ item.pos }}'
+  when: current_position|int != item.pos|int
