@@ -20,6 +20,15 @@
     mas_installed_app_ids: []
     mas_installed_apps: []
 
+    dockitems_remove:
+      - Launchpad
+      - TV
+
+    dockitems_persist:
+      - name: Safari
+        path: "/Applications/Safari.app/"
+        pos: 1
+
   roles:
     - elliotweiser.osx-command-line-tools
     - geerlingguy.mac.homebrew
