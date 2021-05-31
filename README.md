@@ -1,14 +1,16 @@
 # Mac Collection for Ansible
 
+[![MIT licensed][badge-license]][link-license]
+[![Galaxy Collection][badge-collection]][link-galaxy]
 [![CI][badge-gh-actions]][link-gh-actions]
 
 This collection includes helpful Ansible roles and content to help with macOS automation. For a good example of the collection's usage, see the [Mac Dev Playbook](https://github.com/geerlingguy/mac-dev-playbook).
 
 Roles included in this collection (click on the link to see the role's README and documentation):
 
-  - [`geerlingguy.mac.homebrew`](https://github.com/geerlingguy/ansible-collection-mac/blob/master/roles/homebrew/README.md)
-  - [`geerlingguy.mac.mas`](https://github.com/geerlingguy/ansible-collection-mac/blob/master/roles/mas/README.md)
-  - `geerlingguy.mac.dock` (to be added soon!)
+  - `geerlingguy.mac.homebrew` ([documentation](https://github.com/geerlingguy/ansible-collection-mac/blob/master/roles/homebrew/README.md))
+  - `geerlingguy.mac.mas` ([documentation](https://github.com/geerlingguy/ansible-collection-mac/blob/master/roles/mas/README.md))
+  - `geerlingguy.mac.dock` ([documentation](https://github.com/geerlingguy/ansible-collection-mac/blob/master/roles/dock/README.md))
 
 ## Installation
 
@@ -87,3 +89,7 @@ This collection was created by [Jeff Geerling](https://www.jeffgeerling.com), au
 
 [badge-gh-actions]: https://github.com/geerlingguy/ansible-collection-mac/workflows/CI/badge.svg?event=push
 [link-gh-actions]: https://github.com/geerlingguy/ansible-collection-mac/actions?query=workflow%3ACI
+[link-galaxy]: https://galaxy.ansible.com/geerlingguy/mac
+[badge-license]: https://img.shields.io/github/license/geerlingguy/ansible-collection-mac.svg
+[link-license]: https://github.com/geerlingguy/ansible-collection-mac/blob/master/LICENSE
+[badge-gh-actions]: https://github.com/geerlingguy/ansible-role-homebrew/workflows/CI/badge.svg?event=push

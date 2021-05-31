@@ -1,10 +1,5 @@
 # Ansible Role: Homebrew
 
-[![MIT licensed][badge-license]][link-license]
-[![Galaxy Role][badge-role]][link-galaxy]
-[![Downloads][badge-downloads]][link-galaxy]
-[![CI][badge-gh-actions]][link-gh-actions]
-
 Installs [Homebrew][homebrew] on MacOS, and configures packages, taps, and cask apps according to supplied variables.
 
 ## Requirements
@@ -127,10 +122,6 @@ This role was created in 2014 by [Jeff Geerling][author-website], author of
 
 [ansible-for-devops]: https://www.ansiblefordevops.com/
 [author-website]: https://www.jeffgeerling.com/
-[badge-downloads]: https://img.shields.io/ansible/role/d/1858.svg
-[badge-license]: https://img.shields.io/github/license/geerlingguy/ansible-role-homebrew.svg
-[badge-role]: https://img.shields.io/ansible/role/1858.svg
-[badge-gh-actions]: https://github.com/geerlingguy/ansible-role-homebrew/workflows/CI/badge.svg?event=push
 [caskroom]: https://caskroom.github.io/search
 [homebrew]: http://brew.sh/
 [dep-osx-clt-role]: https://galaxy.ansible.com/elliotweiser/osx-command-line-tools/

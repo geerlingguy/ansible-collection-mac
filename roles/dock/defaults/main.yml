@@ -1,0 +1,14 @@
+---
+# Dock items to remove.
+dockitems_remove: []
+# - Launchpad
+# - TV
+# - Podcasts
+# - 'App Store'
+
+# Dock items to add. `pos` parameter is optional and will place the Dock item
+# in a particular position in the Dock.
+dockitems_persist: []
+# - name: "Sublime Text"
+#   path: "/Applications/Sublime Text.app/"
+#   pos: 5

@@ -1,12 +1,10 @@
 # Ansible Role: Mac App Store CLI (mas)
 
-[![CI][badge-gh-actions]][link-gh-actions]
-
 Installs [mas](https://github.com/mas-cli/mas) on macOS, and installs macOS apps from the Mac App Store.
 
 ## Requirements
 
-  - **Homebrew**: Requires `homebrew` already installed (you can use `geerlingguy.homebrew` to install it on your Mac).
+  - **Homebrew**: Requires `homebrew` already installed (you can use `geerlingguy.mac.homebrew` to install it on your Mac).
   - **Mac App Store account**: You can either sign into the Mac App Store via the GUI before running this role, or you can set the `mas_email` and `mas_password` prior to running the role. For security reasons, if you're going to use this role to sign in, you should use `vars_prompt` for at least the password; don't store unencrypted passwords with your playbooks!
 
 ## Role Variables
@@ -61,6 +59,3 @@ MIT / BSD
 ## Author Information
 
 This role was created in 2016 by [Jeff Geerling](https://www.jeffgeerling.com/), author of [Ansible for DevOps](https://www.ansiblefordevops.com/).
-
-[badge-gh-actions]: https://github.com/geerlingguy/ansible-role-mas/workflows/CI/badge.svg?event=push
-[link-gh-actions]: https://github.com/geerlingguy/ansible-role-mas/actions?query=workflow%3ACI
