@@ -65,6 +65,10 @@ Apps you would like to make sure are _uninstalled_.
 
 Directory where applications installed via `cask` should be installed.
 
+    ansible_become_password: your_sudo_password
+
+Set this to your sudo password if casks you want installed need root privileges while installing (like `microsoft-office`), preferably encrypted via `ansible-vault` ([How-to create encrypted variables][link-vault-doc]).
+
     homebrew_use_brewfile: true
 
 Whether to install via a Brewfile. If so, you will need to install the `homebrew/bundle` tap, which could be done within `homebrew_taps`.
@@ -129,3 +133,4 @@ This role was created in 2014 by [Jeff Geerling][author-website], author of
 [link-license]: https://raw.githubusercontent.com/geerlingguy/ansible-role-homebrew/master/LICENSE
 [link-gh-actions]: https://github.com/geerlingguy/ansible-role-homebrew/actions?query=workflow%3ACI
 [mac-dev-playbook]: https://github.com/geerlingguy/mac-dev-playbook
+[link-vault-doc]: https://docs.ansible.com/ansible/latest/user_guide/vault.html#creating-encrypted-variables
