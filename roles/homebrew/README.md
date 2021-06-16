@@ -65,9 +65,9 @@ Apps you would like to make sure are _uninstalled_.
 
 Directory where applications installed via `cask` should be installed.
 
-    ansible_become_password: your_sudo_password
+    ansible_become_password: ""
 
-Set this to your sudo password if casks you want installed need root privileges while installing (like `microsoft-office`), preferably encrypted via `ansible-vault` ([How-to create encrypted variables][link-vault-doc]).
+Set this to your account password if casks you want installed need elevated privileges while installing (like `microsoft-office`), preferably [encrypted via `ansible-vault`][link-vault-doc].
 
     homebrew_use_brewfile: true
 
