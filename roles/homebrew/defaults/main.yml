@@ -21,6 +21,9 @@ homebrew_cask_uninstalled_apps: []
 homebrew_cask_appdir: /Applications
 homebrew_cask_accept_external_apps: false
 
+# Set this to your account password if casks need elevated privileges.
+# ansible_become_password: ''
+
 homebrew_use_brewfile: true
 homebrew_brewfile_dir: '~'
 
