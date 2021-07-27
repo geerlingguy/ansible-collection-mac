@@ -13,7 +13,7 @@
   become: true
   when: ansible_machine == 'arm64'
 
-- name: Ensure Homebrew parent directory has correct permissions (Intel)
+- name: Ensure Homebrew parent directory has correct permissions (Intel).
   block:
     - name: Ensure Homebrew parent directory has correct permissions (MacOS >= 10.13).
       file:
