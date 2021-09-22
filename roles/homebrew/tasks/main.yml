@@ -62,7 +62,6 @@
     owner: "{{ homebrew_user }}"
     group: "{{ homebrew_group }}"
     mode: 0775
-    recurse: true
   become: true
 
 - name: Ensure proper ownership on homebrew_install_path subdirs.
@@ -94,7 +93,6 @@
     state: directory
     owner: "{{ homebrew_user }}"
     group: "{{ homebrew_group }}"
-    recurse: true
   become: true
   loop: "{{ homebrew_folders_base + homebrew_folders_additional }}"
 
