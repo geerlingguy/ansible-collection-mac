@@ -17,6 +17,7 @@
       - name: denji/nginx
         url: 'https://github.com/denji/homebrew-nginx.git'
 
+    mas_uninstalled_apps: []
     mas_installed_app_ids: []
     mas_installed_apps: []
 
