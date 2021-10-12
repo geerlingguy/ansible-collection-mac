@@ -24,17 +24,6 @@ If you leave both blank, and don't prompt for them, the role assumes you've alre
 
 Fallback to the built-in Mac App Store dialog to complete sign in. If set to yes, you must specify the aforementioned `mas_email` variable which will be autofilled in the dialog and prompt you to enter your password, followed by the 2FA authorization code if enabled on the account.
 
-#### Remove installed apps
-
-    mas_uninstalled_apps:
-      - { id: 408981434, name: "iMovie" }
-      - { id: 409183694, name: "Keynote" }
-      - { id: 409201541, name: "Pages" }
-      - { id: 409203825, name: "Numbers" }
-      - { id: 682658836, name: "GarageBand" }
-
-A list of apps to uninstall from the computer, which were installed using the Mac App Store. You can get IDs for all your existing installed apps with `mas list`. The `name` attribute is not authoritative and only used to provide better information in the playbook output.
-
 ### Install apps
 
     mas_installed_apps:
@@ -48,6 +37,17 @@ A list of apps to ensure are installed on the computer using the Mac App Store. 
     mas_upgrade_all_apps: false
 
 Whether to run `mas upgrade`, which will upgrade all installed Mac App Store apps.
+
+### Remove installed apps
+
+    mas_uninstalled_apps:
+      - { id: 408981434, name: "iMovie" }
+      - { id: 409183694, name: "Keynote" }
+      - { id: 409201541, name: "Pages" }
+      - { id: 409203825, name: "Numbers" }
+      - { id: 682658836, name: "GarageBand" }
+
+A list of apps to uninstall from the computer, which were installed using the Mac App Store. You can get IDs for all your existing installed apps with `mas list`. The `name` attribute is not authoritative and only used to provide better information in the playbook output.
 
 ## Dependencies
 
