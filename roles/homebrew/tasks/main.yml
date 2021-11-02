@@ -70,6 +70,7 @@
     state: directory
     owner: "{{ homebrew_user }}"
     group: "{{ homebrew_group }}"
+    recurse: true
   become: true
 
 # Place brew binary in proper location and complete setup.
