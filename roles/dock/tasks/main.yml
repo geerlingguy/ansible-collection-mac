@@ -20,3 +20,6 @@
     - item.pos is defined
     - item.pos > 0
   loop: "{{ dockitems_persist }}"
+
+- name: Restart Dock.
+  ansible.builtin.include_tasks: dock-kill.yml

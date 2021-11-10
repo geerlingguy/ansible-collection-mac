@@ -1,0 +1,6 @@
+---
+- name: "Restart Dock."
+  ansible.builtin.command:
+    cmd: killall Dock
+  become: yes
+  become_method: sudo

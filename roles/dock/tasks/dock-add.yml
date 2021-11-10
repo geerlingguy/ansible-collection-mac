@@ -8,7 +8,20 @@
   changed_when: false
   tags: ['dock']
 
-- name: Ensure Dock item {{ item.name | default(item) }} exists.
-  ansible.builtin.command: "dockutil --add '{{ item.path }}'"
-  when: dockitem_exists.rc >0
+- name: Add missing dock item {{ item.name | default(item) }}.
+  ansible.builtin.command: dockutil --add '{{ item.path }}' --no-restart #-v
+  when: item.pos is undefined
+    and (
+      "was not found in" in dockitem_exists.stdout
+       or dockitem_exists.rc >0 
+    )
+  tags: ['dock']
+
+- name: Add missing dock item {{ item.name | default(item) }} exists with position.
+  ansible.builtin.command: dockutil --add '{{ item.path }}' --position '{{ item.pos }}' --no-restart #-v
+  when: item.pos is defined
+    and (
+      "was not found in" in dockitem_exists.stdout
+       or dockitem_exists.rc >0 
+    )
   tags: ['dock']

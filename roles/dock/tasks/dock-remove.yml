@@ -11,6 +11,6 @@
 
 - name: Ensure Dock item {{ item }} is removed.
   ansible.builtin.command:
-    cmd: dockutil --remove '{{ item }}'
+    cmd: dockutil --remove '{{ item }}' --no-restart #-v
   when: dockitem_exists.rc  == 0
   tags: ['dock']
