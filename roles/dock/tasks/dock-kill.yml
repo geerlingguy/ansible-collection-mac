@@ -4,3 +4,4 @@
     cmd: killall Dock
   become: true
   become_method: sudo
+  when: dock_updated

@@ -1,4 +1,6 @@
 ---
+dock_updated: true
+
 # Dock items to remove.
 dockitems_remove: []
 # - Launchpad
