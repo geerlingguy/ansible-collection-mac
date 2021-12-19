@@ -59,7 +59,9 @@ jobs:
           sudo rm -rf /Applications/Google\ Chrome.app
 
       - name: Install test dependencies.
-        run: sudo pip3 install ansible-core
+        run: |
+          sudo pip3 install --upgrade pip
+          sudo pip3 install ansible-core
 
       - name: Set up the test environment.
         run: |
