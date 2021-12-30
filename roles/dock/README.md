@@ -49,8 +49,8 @@ Dock items to add. `pos` parameter is optional and will place the Dock item in a
             pos: 3
 
       roles:
-        - geerlingguy.homebrew
-        - geerlingguy.dock
+        - geerlingguy.mac.homebrew
+        - geerlingguy.mac.dock
 ```
 
 See the [Mac Development Ansible Playbook](https://github.com/geerlingguy/mac-dev-playbook) for an example of this role's usage.
