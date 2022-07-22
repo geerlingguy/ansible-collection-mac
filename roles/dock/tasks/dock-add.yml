@@ -9,6 +9,13 @@
   tags: ['dock']
 
 - name: Ensure Dock item {{ item.name | default(item) }} exists.
-  ansible.builtin.shell: "dockutil --add '{{ item.path }}' && sleep 7"
+  ansible.builtin.command: "dockutil --add '{{ item.path }}'"
+  register: dockitem_added
+  when: dockitem_exists.rc >0
+  tags: ['dock']
+
+- name: Pause for 7 seconds between dock changes.
+  ansible.builtin.pause:
+    seconds: 7
   when: dockitem_exists.rc >0
   tags: ['dock']
