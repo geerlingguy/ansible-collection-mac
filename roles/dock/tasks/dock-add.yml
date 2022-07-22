@@ -10,7 +10,6 @@
 
 - name: Ensure Dock item {{ item.name | default(item) }} exists.
   ansible.builtin.command: "dockutil --add '{{ item.path }}'"
-  register: dockitem_added
   when: dockitem_exists.rc >0
   tags: ['dock']
 
