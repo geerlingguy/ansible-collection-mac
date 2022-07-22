@@ -9,6 +9,6 @@
   tags: ['dock']
 
 - name: Ensure Dock item {{ item.name | default(item) }} exists.
-  ansible.builtin.command: "dockutil --add '{{ item.path }}'"
+  ansible.builtin.shell: "dockutil --add '{{ item.path }}' && sleep 7"
   when: dockitem_exists.rc >0
   tags: ['dock']
