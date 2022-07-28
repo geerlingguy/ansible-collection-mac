@@ -11,6 +11,14 @@ This role automates the use of `dockutil` to manage the items in your macOS Dock
 Available variables are listed below, along with example values (see `defaults/main.yml`):
 
 ```yaml
+install_dockutil: true
+```
+
+Whether to install dockutil or not. If set to false you'll need to have
+installed dockutil prior to the execution of this role.
+Keep in mind that dockutils < 3.0 won't work on Monterey and newer.
+
+```yaml
 dockitems_remove: []
 ```
 
@@ -32,6 +40,8 @@ Dock items to add. `pos` parameter is optional and will place the Dock item in a
     - hosts: localhost
 
       vars:
+        install_dockutil: true
+
         dockitems_remove:
           - Launchpad
           - TV

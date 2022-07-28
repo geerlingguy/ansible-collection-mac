@@ -12,3 +12,6 @@ dockitems_persist: []
 # - name: "Sublime Text"
 #   path: "/Applications/Sublime Text.app/"
 #   pos: 5
+
+# Whether to install dockutil or not
+install_dockutil: true
