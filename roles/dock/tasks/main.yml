@@ -1,7 +1,8 @@
 ---
+# See: https://github.com/kcrawford/dockutil/issues/127
 - name: Install dockutil.
   community.general.homebrew_cask:
-    name: hpedrorodrigues/tools/dockutil
+    name: "{{ dockutil_homebrew_cask }}"
     state: present
   notify:
     - Clear homebrew cache

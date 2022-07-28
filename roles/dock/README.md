@@ -11,14 +11,6 @@ This role automates the use of `dockutil` to manage the items in your macOS Dock
 Available variables are listed below, along with example values (see `defaults/main.yml`):
 
 ```yaml
-install_dockutil: true
-```
-
-Whether to install dockutil or not. If set to false you'll need to have
-installed dockutil prior to the execution of this role.
-Keep in mind that dockutils < 3.0 won't work on Monterey and newer.
-
-```yaml
 dockitems_remove: []
 ```
 
@@ -30,6 +22,18 @@ dockitems_persist: []
 
 Dock items to add. `pos` parameter is optional and will place the Dock item in a particular position in the Dock.
 
+```yaml
+dockutil_homebrew_cask: hpedrorodrigues/tools/dockutil
+```
+
+Which Homebrew cask to install for dockutil. See [this issue](https://github.com/kcrawford/dockutil/issues/127) to read more about why this cask is the default.
+
+```yaml
+dockutil_install: true
+```
+
+Whether to install dockutil or not. If set to false you'll need to have installed dockutil prior to the execution of this role. See [this issue](https://github.com/geerlingguy/ansible-collection-mac/issues/42) for alternate installation methods, which may be necessary depending on your version of macOS.
+
 ## Dependencies
 
   - (Soft dependency) `geerlingguy.homebrew`
@@ -40,8 +44,6 @@ Dock items to add. `pos` parameter is optional and will place the Dock item in a
     - hosts: localhost
 
       vars:
-        install_dockutil: true
-
         dockitems_remove:
           - Launchpad
           - TV
