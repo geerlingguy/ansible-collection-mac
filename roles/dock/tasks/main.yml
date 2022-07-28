@@ -1,7 +1,7 @@
 ---
 - name: Install dockutil.
-  community.general.homebrew:
-    name: dockutil
+  community.general.homebrew_cask:
+    name: hpedrorodrigues/tools/dockutil
     state: present
   notify:
     - Clear homebrew cache

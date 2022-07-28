@@ -96,7 +96,8 @@
   become: true
   loop: "{{ homebrew_folders_base + homebrew_folders_additional }}"
 
-- block:
+- name: Perform brew installation.
+  block:
     - name: Force update brew after installation.
       command: "{{ homebrew_brew_bin_path }}/brew update --force"
       when: not homebrew_binary.stat.exists
