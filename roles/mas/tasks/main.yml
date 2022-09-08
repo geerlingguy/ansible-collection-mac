@@ -8,11 +8,14 @@
   failed_when: mas_account_result.rc > 1
   check_mode: false
   changed_when: false
+  when:
+    - ansible_distribution_version is version('12', '<')
 
 - name: Sign in to MAS when email and password are provided.
   command: 'mas signin "{{ mas_email }}" "{{ mas_password }}"'
   register: mas_signin_result
   when:
+    - ansible_distribution_version is version('10.13', '<')
     - mas_account_result.rc == 1
     - mas_email is truthy
     - mas_password is truthy
@@ -22,6 +25,7 @@
   command: 'mas signin "{{ mas_email }}" "{{ mas_password }}" --dialog'
   register: mas_signin_result
   when:
+    - ansible_distribution_version is version('10.13', '<')
     - mas_signin_dialog
     - mas_account_result.rc == 1
     - mas_email is truthy
