@@ -96,6 +96,10 @@
   become: true
   loop: "{{ homebrew_folders_base + homebrew_folders_additional }}"
 
+- name: Collect package manager fact.
+  setup:
+    filter: ansible_pkg_mgr
+
 - name: Perform brew installation.
   block:
     - name: Force update brew after installation.
