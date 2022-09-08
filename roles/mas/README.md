@@ -60,8 +60,8 @@ A list of apps to uninstall from the computer, which were installed using the Ma
         mas_installed_apps:
           - { id: 497799835, name: "Xcode (8.1)" }
       roles:
-        - geerlingguy.homebrew
-        - geerlingguy.mas
+        - geerlingguy.mac.homebrew
+        - geerlingguy.mac.mas
 
 See the [Mac Development Ansible Playbook](https://github.com/geerlingguy/mac-dev-playbook) for an example of this role's usage.
 
