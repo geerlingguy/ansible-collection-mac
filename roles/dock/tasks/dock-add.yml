@@ -15,7 +15,7 @@
   tags: ['dock']
 
 - name: Ensure Dock item {{ item.name | default(item) }} exists.
-  ansible.builtin.command: "dockutil --add '{{ item.path }}'"
+  ansible.builtin.command: "dockutil --add '{{ item.path }}' --label '{{ item.name }}'"
   when: dockitem_exists.rc >0 or
         dockitem_exists.rc == 0 and current_section == 'recent-apps'
   tags: ['dock']
