@@ -2,3 +2,4 @@ skip_list:
   - risky-file-permissions
   - yaml
   - fqcn-builtins
+  - name[template]
