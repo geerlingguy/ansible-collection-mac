@@ -120,22 +120,6 @@
         state: present
       loop: "{{ homebrew_taps }}"
 
-    # Cask.
-    - name: Ensure blacklisted cask applications are not installed.
-      homebrew_cask: "name={{ item }} state=absent"
-      loop: "{{ homebrew_cask_uninstalled_apps }}"
-
-    - name: Install configured cask applications.
-      homebrew_cask:
-        name: "{{ item.name | default(item) }}"
-        state: present
-        install_options: "{{ item.install_options | default('appdir=' + homebrew_cask_appdir) }}"
-        accept_external_apps: "{{ homebrew_cask_accept_external_apps }}"
-        sudo_password: "{{ ansible_become_password | default(omit) }}"
-      loop: "{{ homebrew_cask_apps }}"
-      notify:
-        - Clear homebrew cache
-
     # Brew.
     - name: Ensure blacklisted homebrew packages are not installed.
       homebrew: "name={{ item }} state=absent"
@@ -165,6 +149,22 @@
     - name: Install from Brewfile.
       command: "{{ homebrew_brew_bin_path }}/brew bundle chdir={{ homebrew_brewfile_dir }}"
       when: homebrew_brewfile.stat.exists and homebrew_use_brewfile
+
+    # Cask.
+    - name: Ensure blacklisted cask applications are not installed.
+      homebrew_cask: "name={{ item }} state=absent"
+      loop: "{{ homebrew_cask_uninstalled_apps }}"
+
+    - name: Install configured cask applications.
+      homebrew_cask:
+        name: "{{ item.name | default(item) }}"
+        state: present
+        install_options: "{{ item.install_options | default('appdir=' + homebrew_cask_appdir) }}"
+        accept_external_apps: "{{ homebrew_cask_accept_external_apps }}"
+        sudo_password: "{{ ansible_become_password | default(omit) }}"
+      loop: "{{ homebrew_cask_apps }}"
+      notify:
+        - Clear homebrew cache
 
   # Privilege escalation is only required for inner steps when
   # the `homebrew_user` doesn't match the `ansible_user_id`
