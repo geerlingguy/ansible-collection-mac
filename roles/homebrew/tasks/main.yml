@@ -143,6 +143,7 @@
 
     - name: Ensure configured homebrew packages are installed.
       homebrew:
+        path: "{{ homebrew_brew_bin_path }}"
         name: "{{ item.name | default(item) }}"
         install_options: "{{ item.install_options | default(omit) }}"
         state: "{{ item.state | default('present') }}"
