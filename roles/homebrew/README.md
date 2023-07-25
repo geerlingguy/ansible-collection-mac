@@ -101,7 +101,6 @@ Any additional folders inside `homebrew_prefix` for which to ensure homebrew use
 
     - hosts: localhost
       connection: local
-      become: true
       vars:
         homebrew_installed_packages:
           - mysql
