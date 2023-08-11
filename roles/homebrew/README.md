@@ -100,7 +100,6 @@ Any additional folders inside `homebrew_prefix` for which to ensure homebrew use
 ## Example Playbook
 
     - hosts: localhost
-      connection: local
       vars:
         homebrew_installed_packages:
           - mysql
