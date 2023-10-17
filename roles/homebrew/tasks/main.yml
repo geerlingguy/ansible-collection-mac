@@ -136,6 +136,18 @@
       notify:
         - Clear homebrew cache
 
+    - name: Upgrade all cask applications (if configured).
+      homebrew_cask:
+        install_options: "{{ item.install_options | default('appdir=' + homebrew_cask_appdir) }}"
+        accept_external_apps: "{{ homebrew_cask_accept_external_apps }}"
+        sudo_password: "{{ ansible_become_password | default(omit) }}"
+        update_homebrew: true
+        upgrade_all: true
+        greedy: true
+      when: homebrew_cask_upgrade_all_packages
+      notify:
+        - Clear homebrew cache
+
     # Brew.
     - name: Ensure blacklisted homebrew packages are not installed.
       homebrew: "name={{ item }} state=absent"

@@ -10,6 +10,7 @@ homebrew_installed_packages: []
 homebrew_uninstalled_packages: []
 
 homebrew_upgrade_all_packages: false
+homebrew_cask_upgrade_all_packages: false
 
 homebrew_taps:
   - homebrew/core
