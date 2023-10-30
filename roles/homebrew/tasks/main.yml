@@ -122,7 +122,7 @@
 
     # Cask.
     - name: Ensure blacklisted cask applications are not installed.
-      homebrew_cask: "name={{ item }} state=absent"
+      homebrew_cask: "name={{ item }} state=absent sudo_password={{ ansible_become_password | default(omit)}}"
       loop: "{{ homebrew_cask_uninstalled_apps }}"
 
     - name: Install configured cask applications.
