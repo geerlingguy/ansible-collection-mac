@@ -6,3 +6,4 @@ skip_list:
   - name[template]
   - var-naming[no-role-prefix]
   - no-changed-when
+  - galaxy[no-changelog]
