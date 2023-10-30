@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- name: Test the collection.
+  hosts: localhost
 
   vars:
     homebrew_clear_cache: true
