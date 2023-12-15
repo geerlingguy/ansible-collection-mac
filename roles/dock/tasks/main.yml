@@ -10,6 +10,8 @@
   community.general.homebrew_cask:
     name: "{{ dockutil_homebrew_cask }}"
     state: present
+    install_options: 'appdir=/Applications'
+    accept_external_apps: false
     sudo_password: "{{ ansible_become_password | default(omit) }}"
   notify:
     - Clear homebrew cache
