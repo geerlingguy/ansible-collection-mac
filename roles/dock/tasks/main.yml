@@ -1,6 +1,8 @@
 ---
 # See: https://github.com/kcrawford/dockutil/issues/127
-- name: Install dockutil.
+- name: Install dockutil
+  become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+  become_user: "{{ homebrew_user }}"
   community.general.homebrew_cask:
     name: "{{ dockutil_homebrew_cask }}"
     state: present
