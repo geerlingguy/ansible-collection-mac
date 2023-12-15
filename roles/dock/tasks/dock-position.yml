@@ -14,3 +14,8 @@
   ansible.builtin.command:
     cmd: dockutil --move '{{ item.name | default(item) }}' --position '{{ item.pos }}'
   when: current_position|int != item.pos|int
+
+- name: Pause for 7 seconds between dock changes.
+  ansible.builtin.pause:
+    seconds: 7
+  when: current_position|int != item.pos|int
