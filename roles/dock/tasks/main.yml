@@ -5,7 +5,7 @@
     name: "{{ dockutil_homebrew_cask }}"
     state: present
     accept_external_apps: true
-    sudo_password: "{{ ANSIBLE_BECOME_PASSWORD | default(omit) }}"
+    sudo_password: "{{ ansible_become_password | default(omit) }}"
   notify:
     - Clear homebrew cache
   when: dockutil_install
