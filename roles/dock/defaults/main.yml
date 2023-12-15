@@ -14,7 +14,8 @@ dockitems_persist: []
 #   pos: 5
 
 # Which homebrew cask to install for dockutil
-dockutil_homebrew_cask: hpedrorodrigues/tools/dockutil
+dockutil_homebrew_tap: hpedrorodrigues/tools
+dockutil_homebrew_cask: dockutil
 
 # Whether to install dockutil or not
 dockutil_install: true
