@@ -14,7 +14,6 @@
       - google-chrome  # from hombrew/cask
 
     homebrew_taps:
-      - homebrew/core
       - name: denji/nginx
         url: 'https://github.com/denji/homebrew-nginx.git'
 
