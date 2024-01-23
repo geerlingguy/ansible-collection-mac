@@ -88,6 +88,11 @@
   when: not homebrew_binary.stat.exists
   become: true
 
+- name: Add missing folder if not on Apple-chipset
+  set_fact:
+    homebrew_folders_base: "{{ homebrew_folders_base + ['Homebrew'] }}"
+  when: ansible_machine != 'arm64'
+
 - name: Ensure proper homebrew folders are in place.
   file:
     path: "{{ homebrew_prefix }}/{{ item }}"
