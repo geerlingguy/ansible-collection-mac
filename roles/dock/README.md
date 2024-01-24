@@ -23,12 +23,6 @@ dockitems_persist: []
 Dock items to add. `pos` parameter is optional and will place the Dock item in a particular position in the Dock.
 
 ```yaml
-dockutil_homebrew_cask: hpedrorodrigues/tools/dockutil
-```
-
-Which Homebrew cask to install for dockutil. See [this issue](https://github.com/kcrawford/dockutil/issues/127) to read more about why this cask is the default.
-
-```yaml
 dockutil_install: true
 ```
 
