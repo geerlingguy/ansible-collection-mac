@@ -3,6 +3,7 @@
   set_fact:
     homebrew_user: '{{ homebrew_user | default(ansible_user_id) }}'
     homebrew_group: '{{ homebrew_group | default(ansible_user_gid) }}'
+    homebrew_prefix: '{{ homebrew_prefix }}'
 
 # Homebrew setup prerequisites.
 - name: Ensure Homebrew parent directory has correct permissions (M1).

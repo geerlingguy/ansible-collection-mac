@@ -105,6 +105,22 @@ Any additional folders inside `homebrew_prefix` for which to ensure homebrew use
       roles:
         - geerlingguy.mac.homebrew
 
+## Example of including role
+
+    - hosts: localhost
+      tasks:
+        - name: Install Homebrew + OpenJDK
+          ansible.builtin.include_role:
+            name: geerlingguy.mac.homebrew
+          vars:
+            homebrew_installed_packages:
+              - openjdk@17
+        - name: Symlink OpenJDK to system-wide Java VMs
+          ansible.builtin.file:
+            state: link
+            src: "{{ homebrew_prefix }}/opt/openjdk@17/libexec/openjdk.jdk"
+            dest: /Library/Java/JavaVirtualMachines/openjdk-17.jdk
+
 See the `tests/local-testing` directory for an example of running this role over
 Ansible's `local` connection. See also:
 [Mac Development Ansible Playbook][mac-dev-playbook].
