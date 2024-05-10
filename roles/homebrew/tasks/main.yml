@@ -12,6 +12,9 @@
     state: directory
   become: true
   when: ansible_machine == 'arm64'
+  tags:
+    - permissions
+    - permission_check_homebrew_directory
 
 - name: Ensure Homebrew parent directory has correct permissions (Intel).
   when: ansible_machine == 'x86_64'
@@ -23,6 +26,9 @@
         state: directory
       become: true
       when: "ansible_distribution_version is version('10.13', '>=')"
+      tags:
+        - permissions
+        - permission_check_homebrew_directory
 
     - name: Ensure Homebrew parent directory has correct permissions (MacOS < 10.13).
       file:
@@ -33,6 +39,9 @@
         mode: 0775
       become: true
       when: "ansible_distribution_version is version('10.13', '<')"
+      tags:
+        - permissions
+        - permission_check_homebrew_directory
 
 - name: Ensure Homebrew directory exists.
   file:
@@ -42,6 +51,10 @@
     state: directory
     mode: 0775
   become: true
+  tags:
+  - directories
+  - check_homebrew_directory_exists
+
 
 # Clone Homebrew.
 - name: Ensure Homebrew is installed.
@@ -53,6 +66,8 @@
     depth: 1
   become: true
   become_user: "{{ homebrew_user }}"
+  tags:
+    - check_homebrew_installed
 
 # Adjust Homebrew permissions.
 - name: Ensure proper permissions and ownership on homebrew_brew_bin_path dirs.
@@ -63,6 +78,9 @@
     group: "{{ homebrew_group }}"
     mode: 0775
   become: true
+  tags:
+    - permissions
+    - permission_check_bin_directory
 
 - name: Ensure proper ownership on homebrew_install_path subdirs.
   file:
@@ -72,6 +90,9 @@
     group: "{{ homebrew_group }}"
     recurse: true
   become: true
+  tags:
+    - permissions
+    - permission_check_install_directory
 
 # Place brew binary in proper location and complete setup.
 - name: Check if homebrew binary is already in place.
@@ -79,6 +100,8 @@
     path: "{{ homebrew_brew_bin_path }}/brew"
   register: homebrew_binary
   check_mode: false
+  tags:
+    - check_homebrew_binary_exists
 
 - name: Symlink brew to homebrew_brew_bin_path.
   file:
@@ -87,6 +110,9 @@
     state: link
   when: not homebrew_binary.stat.exists
   become: true
+  tags:
+    - symlinks
+    - symlink_homebrew_binary
 
 - name: Add missing folder if not on Apple-chipset
   set_fact:
@@ -101,6 +127,9 @@
     group: "{{ homebrew_group }}"
   become: true
   loop: "{{ homebrew_folders_base + homebrew_folders_additional }}"
+  tags:
+    - directories
+    - check_homebrew_directories_exist
 
 - name: Collect package manager fact.
   setup:
@@ -115,6 +144,8 @@
     - name: Force update brew after installation.
       command: "{{ homebrew_brew_bin_path }}/brew update --force"
       when: not homebrew_binary.stat.exists
+      tags:
+        - force_brew_update
 
     - name: Where is the cache?
       command: "{{ homebrew_brew_bin_path }}/brew --cache"
@@ -129,6 +160,8 @@
         url: '{{ item.url | default(omit) }}'
         state: present
       loop: "{{ homebrew_taps }}"
+      tags:
+        - taps
 
     # Cask.
     - name: Ensure blacklisted cask applications are not installed.
@@ -137,6 +170,8 @@
         state: absent
         sudo_password: "{{ ansible_become_password | default(omit) }}"
       loop: "{{ homebrew_cask_uninstalled_apps }}"
+      tags:
+        - block_blacklisted_casks
 
     - name: Install configured cask applications.
       homebrew_cask:
@@ -148,6 +183,8 @@
       loop: "{{ homebrew_cask_apps }}"
       notify:
         - Clear homebrew cache
+      tags:
+        - install_casks
 
     # Brew.
     - name: Ensure blacklisted homebrew packages are not installed.
@@ -155,6 +192,8 @@
         name: "{{ item }}"
         state: absent
       loop: "{{ homebrew_uninstalled_packages }}"
+      tags:
+        - block_blacklisted_packages
 
     - name: Ensure configured homebrew packages are installed.
       homebrew:
@@ -165,6 +204,8 @@
       loop: "{{ homebrew_installed_packages }}"
       notify:
         - Clear homebrew cache
+      tags:
+        - install_packages
 
     - name: Upgrade all homebrew packages (if configured).
       homebrew:
@@ -173,13 +214,19 @@
       when: homebrew_upgrade_all_packages
       notify:
         - Clear homebrew cache
+      tags:
+        - upgrade_packages
 
     - name: Check for Brewfile.
       stat:
         path: "{{ homebrew_brewfile_dir }}/Brewfile"
       register: homebrew_brewfile
       check_mode: false
+      tags:
+        - check_for_brewfile
 
     - name: Install from Brewfile.
       command: "{{ homebrew_brew_bin_path }}/brew bundle chdir={{ homebrew_brewfile_dir }}"
       when: homebrew_brewfile.stat.exists and homebrew_use_brewfile
+      tags:
+        - install_from_brewfile
