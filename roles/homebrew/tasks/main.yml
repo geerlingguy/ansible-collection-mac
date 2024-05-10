@@ -52,8 +52,8 @@
     mode: 0775
   become: true
   tags:
-  - directories
-  - check_homebrew_directory_exists
+    - directories
+    - check_homebrew_directory_exists
 
 
 # Clone Homebrew.
