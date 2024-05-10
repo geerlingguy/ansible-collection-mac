@@ -54,7 +54,7 @@
   tags:
     - directories
     - check_homebrew_directory_exists
-  
+
 - name: Register contents of homebrew_install_path
   shell: ls -A
   args:
