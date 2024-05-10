@@ -54,7 +54,12 @@
   tags:
     - directories
     - check_homebrew_directory_exists
-
+  
+- name: Register contents of homebrew_install_path
+  shell: ls -A
+  args:
+    chdir: "{{ homebrew_install_path }}"
+  register: homebrew_dir
 
 # Clone Homebrew.
 - name: Ensure Homebrew is installed.
@@ -68,6 +73,7 @@
   become_user: "{{ homebrew_user }}"
   tags:
     - check_homebrew_installed
+  when: homebrew_dir["stdout_lines"] | length == 0
 
 # Adjust Homebrew permissions.
 - name: Ensure proper permissions and ownership on homebrew_brew_bin_path dirs.
