@@ -56,7 +56,7 @@
     - check_homebrew_directory_exists
 
 - name: Register contents of homebrew_install_path
-  shell: ls -A
+  ansible.builtin.command: ls -A
   args:
     chdir: "{{ homebrew_install_path }}"
   register: homebrew_dir
