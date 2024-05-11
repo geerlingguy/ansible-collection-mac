@@ -59,8 +59,6 @@
   ansible.builtin.command: ls -A
   args:
     chdir: "{{ homebrew_install_path }}"
-  ansible.builtin.debug:
-    msg: " {{ homebrew_dir['stdout_lines'] }}"
   register: homebrew_dir
 
 # Clone Homebrew.
