@@ -109,6 +109,17 @@
   tags:
     - check_homebrew_binary_exists
 
+- name: Symlink brew to homebrew_brew_bin_path.
+  file:
+    src: "{{ homebrew_install_path }}/bin/brew"
+    dest: "{{ homebrew_brew_bin_path }}/brew"
+    state: link
+  when: not homebrew_binary.stat.exists
+  become: true
+  tags:
+    - symlinks
+    - symlink_homebrew_binary
+
 - name: Add missing folder if not on Apple-chipset
   set_fact:
     homebrew_folders_base: "{{ homebrew_folders_base + ['Homebrew'] }}"
