@@ -49,7 +49,7 @@
     repo: "{{ homebrew_repo }}"
     version: master
     dest: "{{ homebrew_install_path }}"
-    update: false
+    update: true
     depth: 1
   become: true
   become_user: "{{ homebrew_user }}"

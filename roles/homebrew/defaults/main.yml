@@ -2,7 +2,7 @@
 homebrew_repo: https://github.com/Homebrew/brew
 
 homebrew_prefix: "{{ (ansible_machine == 'arm64') | ternary('/opt/homebrew', '/usr/local') }}"
-homebrew_install_path: "{{ homebrew_prefix }}{{ '/Homebrew' if ansible_machine != 'arm64' }}"
+homebrew_install_path: "{{ homebrew_prefix }}/Homebrew"
 homebrew_brew_bin_path: "{{ homebrew_prefix }}/bin"
 
 homebrew_installed_packages: []
