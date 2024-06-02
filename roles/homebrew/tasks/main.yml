@@ -34,6 +34,11 @@
       become: true
       when: "ansible_distribution_version is version('10.13', '<')"
 
+- name: Check if homebrew already exists.
+  stat:
+    path: "{{ homebrew_brew_bin_path }}/brew"
+  register: pre_installed_brew
+
 - name: Ensure Homebrew directory exists.
   file:
     path: "{{ homebrew_install_path }}"
@@ -114,7 +119,7 @@
   block:
     - name: Force update brew after installation.
       command: "{{ homebrew_brew_bin_path }}/brew update --force"
-      when: not homebrew_binary.stat.exists
+      when: not pre_installed_brew.stat.exists
 
     - name: Where is the cache?
       command: "{{ homebrew_brew_bin_path }}/brew --cache"
