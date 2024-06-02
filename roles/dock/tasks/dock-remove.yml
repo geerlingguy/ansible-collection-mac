@@ -11,12 +11,16 @@
 
 - name: Ensure Dock item {{ item }} is removed.
   ansible.builtin.command:
-    cmd: dockutil --remove '{{ item }}'
+    cmd: |
+      dockutil --remove '{{ item }}'
+      {% if not ansible_loop.last %}--no-restart{% endif %}
   when: dockitem_exists.rc  == 0
   tags: ['dock']
 
 - name: Pause for 7 seconds between dock changes.
   ansible.builtin.pause:
     seconds: 7
-  when: dockitem_exists.rc == 0
+  when:
+    - dockitem_exists.rc == 0
+    - ansible_loop.last
   tags: ['dock']
