@@ -76,6 +76,7 @@
     owner: "{{ homebrew_user }}"
     group: "{{ homebrew_group }}"
     recurse: true
+    follow: false
   become: true
 
 # Place brew binary in proper location and complete setup.
