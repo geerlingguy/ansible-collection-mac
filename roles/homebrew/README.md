@@ -15,11 +15,11 @@ Available variables are listed below, along with default values (see [`defaults/
 The GitHub repository for Homebrew core.
 
     homebrew_prefix: "{{ (ansible_machine == 'arm64') | ternary('/opt/homebrew', '/usr/local') }}"
-    homebrew_install_path: "{{ homebrew_prefix }}/Homebrew"
+    homebrew_install_path: "{{ homebrew_prefix }}{{ '/Homebrew' if ansible_machine != 'arm64' }}"
 
-The path where Homebrew will be installed (`homebrew_prefix` is the parent directory). It is recommended you stick to the default, otherwise Homebrew might have some weird issues. If you change this variable, you should also manually create a symlink back to /usr/local so things work as Homebrew expects.
+The path where Homebrew will be installed (`homebrew_prefix` is the parent directory). It is recommended you stick to the default, otherwise Homebrew might have some weird issues. If you change this variable, you should also manually create a symlink back to `/opt/homebrew` (or `/usr/local` if you're on an Intel-mac) so things work as Homebrew expects.
 
-    homebrew_brew_bin_path: /usr/local/bin
+    homebrew_brew_bin_path: {{ homebrew_prefix }}/bin
 
 The path where `brew` will be installed.
 
@@ -44,7 +44,6 @@ Whether to upgrade homebrew and all packages installed by homebrew. If you prefe
 Whether to upgrade homebrew and all cask applications installed by homebrew. If you prefer to manually update packages via `brew` commands, leave this set to `false`.
 
     homebrew_taps:
-      - homebrew/core
       - { name: my_company/internal_tap, url: 'https://example.com/path/to/tap.git' }
 
 Taps you would like to make sure Homebrew has tapped.
@@ -109,7 +108,7 @@ Any additional folders inside `homebrew_prefix` for which to ensure homebrew use
         homebrew_installed_packages:
           - mysql
       roles:
-        - geerlingguy.homebrew
+        - geerlingguy.mac.homebrew
 
 See the `tests/local-testing` directory for an example of running this role over
 Ansible's `local` connection. See also:

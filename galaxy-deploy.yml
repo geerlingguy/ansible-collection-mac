@@ -10,7 +10,8 @@
 #   ansible-playbook -i 'localhost,' galaxy-deploy.yml \
 #   -e "github_tag=${{ github.ref }}"
 
-- hosts: localhost
+- name: Deploy new Collection version to Galaxy.
+  hosts: localhost
   connection: local
   gather_facts: false
 
@@ -24,7 +25,7 @@
     - name: Ensure ANSIBLE_GALAXY_TOKEN is set.
       fail:
         msg: A valid ANSIBLE_GALAXY_TOKEN must be set.
-      when: "lookup('env','ANSIBLE_GALAXY_TOKEN') | length == 0"
+      when: "lookup('env', 'ANSIBLE_GALAXY_TOKEN') | length == 0"
 
     - name: Ensure the ~/.ansible directory exists.
       file:
@@ -34,7 +35,7 @@
     - name: Write the Galaxy token to ~/.ansible/galaxy_token
       copy:
         content: |
-          token: {{ lookup('env','ANSIBLE_GALAXY_TOKEN') }}
+          token: {{ lookup('env', 'ANSIBLE_GALAXY_TOKEN') }}
         dest: ~/.ansible/galaxy_token
 
   tasks:
@@ -46,7 +47,9 @@
 
     - name: Build the collection.
       command: ansible-galaxy collection build
+      changed_when: true
 
     - name: Publish the collection.
       command: >
         ansible-galaxy collection publish ./{{ namespace }}-{{ collection }}-{{ release_tag }}.tar.gz
+      changed_when: true

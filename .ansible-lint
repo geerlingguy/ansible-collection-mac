@@ -2,4 +2,8 @@ skip_list:
   - risky-file-permissions
   - yaml
   - fqcn-builtins
+  - fqcn[action]
   - name[template]
+  - var-naming[no-role-prefix]
+  - no-changed-when
+  - galaxy[no-changelog]

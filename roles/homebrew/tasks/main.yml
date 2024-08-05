@@ -14,6 +14,7 @@
   when: ansible_machine == 'arm64'
 
 - name: Ensure Homebrew parent directory has correct permissions (Intel).
+  when: ansible_machine == 'x86_64'
   block:
     - name: Ensure Homebrew parent directory has correct permissions (MacOS >= 10.13).
       file:
@@ -32,7 +33,11 @@
         mode: 0775
       become: true
       when: "ansible_distribution_version is version('10.13', '<')"
-  when: ansible_machine == 'x86_64'
+
+- name: Check if homebrew already exists.
+  stat:
+    path: "{{ homebrew_brew_bin_path }}/brew"
+  register: pre_installed_brew
 
 - name: Ensure Homebrew directory exists.
   file:
@@ -75,7 +80,8 @@
 
 # Place brew binary in proper location and complete setup.
 - name: Check if homebrew binary is already in place.
-  stat: "path={{ homebrew_brew_bin_path }}/brew"
+  stat:
+    path: "{{ homebrew_brew_bin_path }}/brew"
   register: homebrew_binary
   check_mode: false
 
@@ -86,6 +92,11 @@
     state: link
   when: not homebrew_binary.stat.exists
   become: true
+
+- name: Add missing folder if not on Apple-chipset
+  set_fact:
+    homebrew_folders_base: "{{ homebrew_folders_base + ['Homebrew'] }}"
+  when: ansible_machine != 'arm64'
 
 - name: Ensure proper homebrew folders are in place.
   file:
@@ -101,10 +112,14 @@
     filter: ansible_pkg_mgr
 
 - name: Perform brew installation.
+  # Privilege escalation is only required for inner steps when
+  # the `homebrew_user` doesn't match the `ansible_user_id`
+  become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+  become_user: "{{ homebrew_user }}"
   block:
     - name: Force update brew after installation.
       command: "{{ homebrew_brew_bin_path }}/brew update --force"
-      when: not homebrew_binary.stat.exists
+      when: not pre_installed_brew.stat.exists
 
     - name: Where is the cache?
       command: "{{ homebrew_brew_bin_path }}/brew --cache"
@@ -122,7 +137,10 @@
 
     # Cask.
     - name: Ensure blacklisted cask applications are not installed.
-      homebrew_cask: "name={{ item }} state=absent"
+      homebrew_cask:
+        name: "{{ item }}"
+        state: absent
+        sudo_password: "{{ ansible_become_password | default(omit) }}"
       loop: "{{ homebrew_cask_uninstalled_apps }}"
 
     - name: Install configured cask applications.
@@ -150,11 +168,14 @@
 
     # Brew.
     - name: Ensure blacklisted homebrew packages are not installed.
-      homebrew: "name={{ item }} state=absent"
+      homebrew:
+        name: "{{ item }}"
+        state: absent
       loop: "{{ homebrew_uninstalled_packages }}"
 
     - name: Ensure configured homebrew packages are installed.
       homebrew:
+        path: "{{ homebrew_brew_bin_path }}"
         name: "{{ item.name | default(item) }}"
         install_options: "{{ item.install_options | default(omit) }}"
         state: "{{ item.state | default('present') }}"
@@ -163,7 +184,9 @@
         - Clear homebrew cache
 
     - name: Upgrade all homebrew packages (if configured).
-      homebrew: update_homebrew=yes upgrade_all=yes
+      homebrew:
+        update_homebrew: true
+        upgrade_all: true
       when: homebrew_upgrade_all_packages
       notify:
         - Clear homebrew cache
@@ -177,8 +200,3 @@
     - name: Install from Brewfile.
       command: "{{ homebrew_brew_bin_path }}/brew bundle chdir={{ homebrew_brewfile_dir }}"
       when: homebrew_brewfile.stat.exists and homebrew_use_brewfile
-
-  # Privilege escalation is only required for inner steps when
-  # the `homebrew_user` doesn't match the `ansible_user_id`
-  become: "{{ (homebrew_user != ansible_user_id) | bool }}"
-  become_user: "{{ homebrew_user }}"

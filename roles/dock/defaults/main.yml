@@ -13,8 +13,5 @@ dockitems_persist: []
 #   path: "/Applications/Sublime Text.app/"
 #   pos: 5
 
-# Which homebrew cask to install for dockutil
-dockutil_homebrew_cask: hpedrorodrigues/tools/dockutil
-
 # Whether to install dockutil or not
 dockutil_install: true
