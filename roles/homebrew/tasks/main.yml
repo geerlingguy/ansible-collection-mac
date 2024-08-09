@@ -58,6 +58,7 @@
     depth: 1
   become: true
   become_user: "{{ homebrew_user }}"
+  when: not pre_installed_brew.stat.exists
 
 # Adjust Homebrew permissions.
 - name: Ensure proper permissions and ownership on homebrew_brew_bin_path dirs.
