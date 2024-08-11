@@ -30,7 +30,7 @@
         owner: root
         group: admin
         state: directory
-        mode: 0775
+        mode: "0775"
       become: true
       when: "ansible_distribution_version is version('10.13', '<')"
 
@@ -45,7 +45,7 @@
     owner: "{{ homebrew_user }}"
     group: "{{ homebrew_group }}"
     state: directory
-    mode: 0775
+    mode: "0775"
   become: true
 
 # Clone Homebrew.
@@ -67,7 +67,7 @@
     state: directory
     owner: "{{ homebrew_user }}"
     group: "{{ homebrew_group }}"
-    mode: 0775
+    mode: "0775"
   become: true
 
 - name: Ensure proper ownership on homebrew_install_path subdirs.

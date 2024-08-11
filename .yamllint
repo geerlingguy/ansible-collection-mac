@@ -5,7 +5,7 @@ rules:
   line-length:
     max: 180
     level: warning
-  comments:
+  braces:
     min-spaces-inside: 0
     max-spaces-inside: 1
   octal-values:
