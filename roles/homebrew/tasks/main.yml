@@ -187,5 +187,7 @@
       check_mode: false
 
     - name: Install from Brewfile.
-      command: "{{ homebrew_brew_bin_path }}/brew bundle chdir={{ homebrew_brewfile_dir }}"
+      command: "{{ homebrew_brew_bin_path }}/brew bundle"
+      args:
+        chdir: "{{ homebrew_brewfile_dir }}"
       when: homebrew_brewfile.stat.exists and homebrew_use_brewfile
