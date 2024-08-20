@@ -1,0 +1,5 @@
+---
+- name: Set up Homebrew on macOS only
+  when: ansible_os_family == "Darwin"
+  ansible.builtin.include_tasks:
+    file: setup_homebrew.yml
