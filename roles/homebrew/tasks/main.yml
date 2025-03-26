@@ -5,7 +5,7 @@
     homebrew_group: '{{ homebrew_group | default(ansible_user_gid) }}'
 
 # Homebrew setup prerequisites.
-- name: Ensure Homebrew parent directory has correct permissions (M1).
+- name: Ensure Homebrew parent directory has correct permissions (Apple Silicon).
   file:
     path: "{{ homebrew_prefix }}"
     owner: "{{ homebrew_user }}"
