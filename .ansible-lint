@@ -1,3 +1,7 @@
+---
+exclude_paths:
+  - galaxy-deploy.yml
+  - .ansible/roles/*
 skip_list:
   - risky-file-permissions
   - yaml

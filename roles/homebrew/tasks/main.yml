@@ -5,7 +5,7 @@
     homebrew_group: '{{ homebrew_group | default(ansible_user_gid) }}'
 
 # Homebrew setup prerequisites.
-- name: Ensure Homebrew parent directory has correct permissions (M1).
+- name: Ensure Homebrew parent directory has correct permissions (Apple Silicon).
   file:
     path: "{{ homebrew_prefix }}"
     owner: "{{ homebrew_user }}"
@@ -30,7 +30,7 @@
         owner: root
         group: admin
         state: directory
-        mode: 0775
+        mode: "0775"
       become: true
       when: "ansible_distribution_version is version('10.13', '<')"
 
@@ -45,7 +45,7 @@
     owner: "{{ homebrew_user }}"
     group: "{{ homebrew_group }}"
     state: directory
-    mode: 0775
+    mode: "0775"
   become: true
 
 # Clone Homebrew.
@@ -58,6 +58,7 @@
     depth: 1
   become: true
   become_user: "{{ homebrew_user }}"
+  when: not pre_installed_brew.stat.exists
 
 # Adjust Homebrew permissions.
 - name: Ensure proper permissions and ownership on homebrew_brew_bin_path dirs.
@@ -66,7 +67,7 @@
     state: directory
     owner: "{{ homebrew_user }}"
     group: "{{ homebrew_group }}"
-    mode: 0775
+    mode: "0775"
   become: true
 
 - name: Ensure proper ownership on homebrew_install_path subdirs.
@@ -76,6 +77,7 @@
     owner: "{{ homebrew_user }}"
     group: "{{ homebrew_group }}"
     recurse: true
+    follow: false
   become: true
 
 # Place brew binary in proper location and complete setup.
@@ -198,5 +200,7 @@
       check_mode: false
 
     - name: Install from Brewfile.
-      command: "{{ homebrew_brew_bin_path }}/brew bundle chdir={{ homebrew_brewfile_dir }}"
+      command: "{{ homebrew_brew_bin_path }}/brew bundle"
+      args:
+        chdir: "{{ homebrew_brewfile_dir }}"
       when: homebrew_brewfile.stat.exists and homebrew_use_brewfile
