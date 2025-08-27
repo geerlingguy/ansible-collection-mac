@@ -37,6 +37,7 @@
   register: mas_list
   check_mode: false
   changed_when: false
+  failed_when: mas_list.rc not in [0,1]
 
 - name: Ensure unwanted MAS apps are uninstalled.
   command: '"{{ mas_path }}" uninstall "{{ item.id | default(item) }}"'
