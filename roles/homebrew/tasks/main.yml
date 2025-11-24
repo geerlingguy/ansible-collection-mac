@@ -1,8 +1,8 @@
 ---
 - name: Determine Homebrew ownership variables
   set_fact:
-    homebrew_user: '{{ homebrew_user | default(ansible_user_id) }}'
-    homebrew_group: '{{ homebrew_group | default(ansible_user_gid) }}'
+    homebrew_user: '{{ homebrew_user | default(ansible_facts["user_id"]) }}'
+    homebrew_group: '{{ homebrew_group | default(ansible_facts["user_gid"]) }}'
 
 # Homebrew setup prerequisites.
 - name: Ensure Homebrew parent directory has correct permissions (Apple Silicon).
@@ -11,10 +11,10 @@
     owner: "{{ homebrew_user }}"
     state: directory
   become: true
-  when: ansible_machine == 'arm64'
+  when: ansible_facts["machine"] == 'arm64'
 
 - name: Ensure Homebrew parent directory has correct permissions (Intel).
-  when: ansible_machine == 'x86_64'
+  when: ansible_facts["machine"] == 'x86_64'
   block:
     - name: Ensure Homebrew parent directory has correct permissions (MacOS >= 10.13).
       file:
@@ -22,7 +22,7 @@
         owner: root
         state: directory
       become: true
-      when: "ansible_distribution_version is version('10.13', '>=')"
+      when: "ansible_facts['distribution_version'] is version('10.13', '>=')"
 
     - name: Ensure Homebrew parent directory has correct permissions (MacOS < 10.13).
       file:
@@ -32,7 +32,7 @@
         state: directory
         mode: "0775"
       become: true
-      when: "ansible_distribution_version is version('10.13', '<')"
+      when: "ansible_facts['distribution_version'] is version('10.13', '<')"
 
 - name: Check if homebrew already exists.
   stat:
@@ -98,7 +98,7 @@
 - name: Add missing folder if not on Apple-chipset
   set_fact:
     homebrew_folders_base: "{{ homebrew_folders_base + ['Homebrew'] }}"
-  when: ansible_machine != 'arm64'
+  when: ansible_facts["machine"] != 'arm64'
 
 - name: Ensure proper homebrew folders are in place.
   file:
@@ -111,12 +111,12 @@
 
 - name: Collect package manager fact.
   setup:
-    filter: ansible_pkg_mgr
+    filter: ansible_facts["pkg_mgr"]
 
 - name: Perform brew installation.
   # Privilege escalation is only required for inner steps when
   # the `homebrew_user` doesn't match the `ansible_user_id`
-  become: "{{ (homebrew_user != ansible_user_id) | bool }}"
+  become: "{{ (homebrew_user != ansible_facts['user_id']) | bool }}"
   become_user: "{{ homebrew_user }}"
   block:
     - name: Force update brew after installation.
@@ -142,7 +142,7 @@
       homebrew_cask:
         name: "{{ item }}"
         state: absent
-        sudo_password: "{{ ansible_become_password | default(omit) }}"
+        sudo_password: "{{ ansible_facts['become_password'] | default(omit) }}"
       loop: "{{ homebrew_cask_uninstalled_apps }}"
 
     - name: Install configured cask applications.
@@ -151,7 +151,7 @@
         state: present
         install_options: "{{ item.install_options | default('appdir=' + homebrew_cask_appdir) }}"
         accept_external_apps: "{{ homebrew_cask_accept_external_apps }}"
-        sudo_password: "{{ ansible_become_password | default(omit) }}"
+        sudo_password: "{{ ansible_facts['become_password'] | default(omit) }}"
       loop: "{{ homebrew_cask_apps }}"
       notify:
         - Clear homebrew cache
