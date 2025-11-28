@@ -14,8 +14,8 @@ Available variables are listed below, along with default values (see [`defaults/
 
 The GitHub repository for Homebrew core.
 
-    homebrew_prefix: "{{ (ansible_machine == 'arm64') | ternary('/opt/homebrew', '/usr/local') }}"
-    homebrew_install_path: "{{ homebrew_prefix }}{{ '/Homebrew' if ansible_machine != 'arm64' }}"
+    homebrew_prefix: "{{ (ansible_facts.machine == 'arm64') | ternary('/opt/homebrew', '/usr/local') }}"
+    homebrew_install_path: "{{ homebrew_prefix }}{{ '/Homebrew' if ansible_facts.machine != 'arm64' }}"
 
 The path where Homebrew will be installed (`homebrew_prefix` is the parent directory). It is recommended you stick to the default, otherwise Homebrew might have some weird issues. If you change this variable, you should also manually create a symlink back to `/opt/homebrew` (or `/usr/local` if you're on an Intel-mac) so things work as Homebrew expects.
 
@@ -80,11 +80,11 @@ The directory where your Brewfile is located.
 
 Set to `true` to remove the Hombrew cache after any new software is installed.
 
-    homebrew_user: "{{ ansible_user_id }}"
+    homebrew_user: "{{ ansible_facts.user_id }}"
 
 The user that you would like to install Homebrew as.
 
-    homebrew_group: "{{ ansible_user_gid }}"
+    homebrew_group: "{{ ansible_facts.user_gid }}"
 
 The group that you would like to use while installing Homebrew.
 

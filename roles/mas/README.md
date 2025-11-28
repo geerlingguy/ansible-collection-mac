@@ -38,7 +38,7 @@ A list of apps to ensure are installed on the computer using the Mac App Store. 
 
 Whether to run `mas upgrade`, which will upgrade all installed Mac App Store apps.
 
-    mas_path: "{{ '/opt/homebrew/bin/mas' if ansible_architecture == 'arm64' else '/usr/local/bin/mas' }}"
+    mas_path: "{{ '/opt/homebrew/bin/mas' if ansible_facts.architecture == 'arm64' else '/usr/local/bin/mas' }}"
 
 When targeting a remote Mac, the PATH isn't always correct leading to the `mas` binary not being found. This variable allows you to override the path to the `mas` binary. The defaults above work for most installations, but you may need to override this if you have a custom Homebrew installation path or other custom setup.
 
