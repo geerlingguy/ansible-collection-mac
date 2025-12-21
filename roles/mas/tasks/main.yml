@@ -32,23 +32,39 @@
     - mas_account_result.rc == 1
     - mas_email is truthy
 
-- name: List installed MAS apps.
-  command: '"{{ mas_path }}" list'
-  register: mas_list
-  check_mode: false
-  changed_when: false
-  failed_when: mas_list.rc not in [0,1]
+# - name: List installed MAS apps.
+#   command: '"{{ mas_path }}" list'
+#   register: mas_list
+#   check_mode: false
+#   changed_when: false
+#   failed_when: mas_list.rc not in [0,1]
 
 - name: Ensure unwanted MAS apps are uninstalled.
-  command: '"{{ mas_path }}" uninstall "{{ item.id | default(item) }}"'
-  with_items: "{{ mas_uninstalled_apps }}"
-  when: (item.id | default(item) | string) in mas_list.stdout
+  become: true
+  environment:
+    PATH: "{{ mas_path | dirname }}:{{ ansible_facts.env.PATH }}"
+  community.general.mas:
+    id: "{{ item.id | default(item) }}"
+    state: absent
+  loop: "{{ mas_uninstalled_apps }}"
+  loop_control:
+    label: "{{ item.name | default(item.id | default(item)) }}"
 
 - name: Ensure configured MAS apps are installed.
-  command: '"{{ mas_path }}" install "{{ item.id | default(item) }}"'
-  with_items: "{{ mas_installed_apps + mas_installed_app_ids }}"
-  when: (item.id | default(item) | string) not in mas_list.stdout
+  become: true
+  environment:
+    PATH: "{{ mas_path | dirname }}:{{ ansible_facts.env.PATH }}"
+  community.general.mas:
+    id: "{{ item.id | default(item) }}"
+    state: present
+  loop: "{{ mas_installed_apps + mas_installed_app_ids }}"
+  loop_control:
+    label: "{{ item.name | default(item.id | default(item)) }}"
 
 - name: Upgrade all apps (if configured).
-  command: '"{{ mas_path }}" upgrade'
+  become: true
+  environment:
+    PATH: "{{ mas_path | dirname }}:{{ ansible_facts.env.PATH }}"
+  community.general.mas:
+    upgrade_all: true
   when: mas_upgrade_all_apps
