@@ -49,6 +49,10 @@
   loop: "{{ mas_uninstalled_apps }}"
   loop_control:
     label: "{{ item.name | default(item.id | default(item)) }}"
+  register: mas_result
+  retries: 3
+  delay: 10
+  until: mas_result is succeeded
 
 - name: Ensure configured MAS apps are installed.
   become: true
@@ -60,6 +64,10 @@
   loop: "{{ mas_installed_apps + mas_installed_app_ids }}"
   loop_control:
     label: "{{ item.name | default(item.id | default(item)) }}"
+  register: mas_result
+  retries: 3
+  delay: 10
+  until: mas_result is succeeded
 
 - name: Upgrade all apps (if configured).
   become: true
