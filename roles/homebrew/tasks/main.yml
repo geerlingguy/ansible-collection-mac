@@ -134,6 +134,7 @@
       homebrew_tap:
         tap: '{{ item.name | default(item) }}'
         url: '{{ item.url | default(omit) }}'
+        trust: '{{ item.trust | default(true) | bool }}'
         state: present
       loop: "{{ homebrew_taps }}"
 
